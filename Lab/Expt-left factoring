@@ -1,1 +1,40 @@
+#include <stdio.h>
+#include <string.h>
 
+int main()
+{
+    char lhs[20];
+    char prod1[50], prod2[50];
+    char common[50];
+    int i = 0;
+
+    printf("Enter the Left Hand Side (Non-terminal): ");
+    scanf("%s", lhs);
+
+    printf("Enter Production 1: ");
+    scanf("%s", prod1);
+
+    printf("Enter Production 2: ");
+    scanf("%s", prod2);
+
+    // Find common prefix
+    while (prod1[i] != '\0' && prod2[i] != '\0' && prod1[i] == prod2[i])
+    {
+        common[i] = prod1[i];
+        i++;
+    }
+    common[i] = '\0';
+
+    if (strlen(common) == 0)
+    {
+        printf("\nNo Left Factoring is required.\n");
+    }
+    else
+    {
+        printf("\nAfter Left Factoring:\n");
+        printf("%s -> %s%s'\n", lhs, common, lhs);
+        printf("%s' -> %s | %s\n", lhs, prod1 + i, prod2 + i);
+    }
+
+    return 0;
+}
