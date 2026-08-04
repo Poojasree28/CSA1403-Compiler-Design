@@ -1,1 +1,70 @@
+#include <stdio.h>
+#include <ctype.h>
 
+char prod[20][20];
+char first[20];
+int n, cnt = 0;
+
+void findFirst(char ch)
+{
+    int i;
+
+    if (!isupper(ch))
+    {
+        first[cnt++] = ch;
+        return;
+    }
+
+    for(i = 0; i < n; i++)
+    {
+        if(prod[i][0] == ch)
+        {
+            if(isupper(prod[i][2]))
+                findFirst(prod[i][2]);
+            else
+                first[cnt++] = prod[i][2];
+        }
+    }
+}
+
+int main()
+{
+    int i, j;
+    char symbol;
+
+    printf("Enter number of productions: ");
+    scanf("%d", &n);
+
+    printf("Enter productions (Example: S=A or A=a)\n");
+
+    for(i = 0; i < n; i++)
+        scanf("%s", prod[i]);
+
+    printf("Enter symbol to find FIRST: ");
+    scanf(" %c", &symbol);
+
+    findFirst(symbol);
+
+    printf("\nFIRST(%c) = { ", symbol);
+
+    for(i = 0; i < cnt; i++)
+    {
+        int duplicate = 0;
+
+        for(j = 0; j < i; j++)
+        {
+            if(first[i] == first[j])
+            {
+                duplicate = 1;
+                break;
+            }
+        }
+
+        if(!duplicate)
+            printf("%c ", first[i]);
+    }
+
+    printf("}\n");
+
+    return 0;
+}
