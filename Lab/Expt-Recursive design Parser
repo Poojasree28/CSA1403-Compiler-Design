@@ -1,1 +1,107 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 
+char input[100];
+int pos = 0;
+
+void E();
+void Eprime();
+void T();
+void Tprime();
+void F();
+
+void error()
+{
+    printf("String Rejected\n");
+    exit(0);
+}
+
+// E -> T E'
+void E()
+{
+    T();
+    Eprime();
+}
+
+// E' -> + T E' | epsilon
+void Eprime()
+{
+    if(input[pos] == '+')
+    {
+        pos++;
+        T();
+        Eprime();
+    }
+}
+
+// T -> F T'
+void T()
+{
+    F();
+    Tprime();
+}
+
+// T' -> * F T' | epsilon
+void Tprime()
+{
+    if(input[pos] == '*')
+    {
+        pos++;
+        F();
+        Tprime();
+    }
+}
+
+// F -> (E) | id
+void F()
+{
+    if(isalpha(input[pos]))
+    {
+        printf("id -> %c\n", input[pos]);
+        pos++;
+    }
+    else if(input[pos] == '(')
+    {
+        printf("F -> (E)\n");
+        pos++;
+
+        E();
+
+        if(input[pos] == ')')
+        {
+            pos++;
+        }
+        else
+        {
+            error();
+        }
+    }
+    else
+    {
+        error();
+    }
+}
+
+int main()
+{
+    printf("Recursive Design Parser\n");
+
+    printf("Enter the string: ");
+    scanf("%s", input);
+
+    E();
+
+    if(input[pos] == '\0')
+    {
+        printf("\nParsing Successful\n");
+        printf("String Accepted\n");
+    }
+    else
+    {
+        printf("\nParsing Failed\n");
+        printf("String Rejected\n");
+    }
+
+    return 0;
+}
